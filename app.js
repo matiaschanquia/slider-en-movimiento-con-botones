@@ -25,10 +25,14 @@ function cambiarAnchoImg() {
 }
 
 function reinciarSlider() {
+    pararSlider();
     contentSlider.style.transform = `translateX(0px)`;
     index = -1;
-    clearInterval(interval);
     cambiarAnchoImg();
+    reiniciarBtns();
+    if(window.innerWidth < 768) {
+        return;
+    }
     interval = setInterval(movimientoSlider, 2000);
 }
 
@@ -48,7 +52,8 @@ function moverSlider(direccion) {
         let percentage = index * (-anchoImg - 24);
         contentSlider.style.transform = `translateX(${percentage}px)`;
     } else {
-        index += 1;
+        if(index === -1) index += 2;
+        else index += 1;
         let percentage = index * (-anchoImg - 24);
         contentSlider.style.transform = `translateX(${percentage}px)`;
     }
@@ -63,7 +68,7 @@ function reiniciarBtns() {
         btnDer.disabled = true;
     }
 
-    if(index === 0) {
+    if(index <= 0) {
         btnIzq.disabled = true;
     }
 }
@@ -77,9 +82,15 @@ let cantData = data.length;
 let anchoImg;
 cambiarAnchoImg();
 
+
+
 let interval;
 let intervalPrincipal;
-let timeOutInterval = setTimeout(activarIntervalo, 1000);
+let timeOutInterval;
+if(window.innerWidth > 768) {
+    
+    timeOutInterval = setTimeout(activarIntervalo, 1000);
+}
 
 setInterval(() => {
     console.log("hola");
